@@ -1,9 +1,13 @@
 # phpバージョン指定
-FROM php:5.4-apache
+FROM php:5.6-apache
 # Required
 RUN apt-get update
 RUN apt-get install mcrypt libmcrypt-dev -y
 RUN docker-php-ext-install mysql mysqli pdo_mysql mbstring
+RUN curl -sSL https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 -o mhsendmail \
+    && chmod +x mhsendmail \
+    && mv mhsendmail /usr/local/bin/mhsendmail
 
 # Enable RewriteEngine
 RUN a2enmod rewrite
+COPY php.ini /usr/local/etc/php/
